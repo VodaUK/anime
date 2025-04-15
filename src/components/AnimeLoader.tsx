@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
+import { Anime } from '../App';
 
 const GET_ANIME = gql`
   query ($page: Int, $perPage: Int) {
@@ -17,24 +18,31 @@ const GET_ANIME = gql`
   }
 `;
 
-type Anime = {
-  id: number;
-  title: {
-    romaji: string;
-  };
-  coverImage: {
-    large: string;
-  };
+type AnimeLoaderProps = {
+  page: number;
+  perPage: number;
+  onData: (data: Anime[]) => void;
 };
 
-const AnimeLoader: React.FC<{ page: number; perPage: number; onData: (data: Anime[]) => void }> = ({ page, perPage, onData }) => {
-  const { loading, error, data } = useQuery(GET_ANIME, { variables: { page, perPage } });
-  
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error occurred.</p>;
-  
-  // Передача загруженных данных в родительский компонент
-  onData(data.Page.media);
+const AnimeLoader: React.FC<AnimeLoaderProps> = ({ page, perPage, onData }) => {
+  const { loading, error, data } = useQuery(GET_ANIME, {
+    variables: { page, perPage },
+  });
+
+  useEffect(() => {
+    if (data && data.Page && data.Page.media) {
+      const newAnime = data.Page.media.map((anime: any) => ({
+        id: anime.id,
+        title: anime.title.romaji,
+        coverImage: anime.coverImage.large,
+      }));
+      onData(newAnime);
+    }
+  }, [data, onData]);
+
+  if (loading) return <p className="text-center mt-4">Загрузка аниме...</p>;
+  if (error) return <p className="text-center mt-4">Ошибка загрузки.</p>;
+
   return null;
 };
 
