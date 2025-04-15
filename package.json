@@ -1,0 +1,25 @@
+{
+"name": "anime-tracker",
+"version": "0.1.0",
+"private": true,
+"dependencies": {
+"@apollo/client": "^3.10.0",
+"apollo-cache-inmemory": "^1.6.6",
+"framer-motion": "^9.0.0",
+"graphql": "^16.6.0",
+"react": "^18.2.0",
+"react-dom": "^18.2.0",
+"react-scripts": "5.0.1",
+"react-tinder-card": "^1.4.1",
+"typescript": "^4.9.5"
+},
+"devDependencies": {
+"autoprefixer": "^10.4.13",
+"postcss": "^8.4.20",
+"tailwindcss": "^3.2.4"
+},
+"scripts": {
+"start": "react-scripts start",
+"build": "react-scripts build"
+}
+}
